@@ -15,3 +15,6 @@ header{
 .Title{
   @apply text-4xl md:text-5xl font-bold my-4  md:leading-snug leading-snug
 }
+.heartstar{
+ border-radius: 0px 28px 0px 28px;
+}
