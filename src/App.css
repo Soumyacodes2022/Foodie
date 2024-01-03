@@ -3,7 +3,15 @@
 body{
   font-family: 'Inter', sans-serif;
 }
-
+header{
+  z-index: 1 !important;
+}
 .section-container{
   @apply max-w-screen-2xl container mx-auto xl:px-28 px-4;
+}
+.Subtitle{
+  @apply text-red text-lg font-medium uppercase tracking-wide
+}
+.Title{
+  @apply text-4xl md:text-5xl font-bold my-4  md:leading-snug leading-snug
 }

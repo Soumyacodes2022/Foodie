@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState , useEffect } from 'react'
 import { FaSearch } from "react-icons/fa";
 import { BiSolidPhoneCall } from "react-icons/bi";
 import logo from "../images/logo.png"
@@ -28,8 +28,20 @@ const Navbar = () => {
         </li>
         <li><a>Offers</a></li>
   </>)
+  const [top,setTop] = useState(true)
+  useEffect(() => {
+    
+  const setScrollbar=()=>{
+    window.scrollY>10 ? setTop(false) :setTop(true)
+  }
+    window.addEventListener('scroll',setScrollbar)
+    return () => {
+      window.removeEventListener('scroll',setScrollbar)
+    }
+  }, [top])
+  
   return (
-    <header className='max-w-screen-2xl container mx-auto '>
+    <header className={`max-w-screen-2xl container mx-auto fixed  ${!top && `bg-white shadow-md`}  `}>
     
         <div className="navbar xl:px-24 min-w-80">
   <div className="navbar-start">
