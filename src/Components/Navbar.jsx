@@ -1,7 +1,7 @@
 import React, { useState , useEffect } from 'react'
 import { FaSearch } from "react-icons/fa";
 import { BiSolidPhoneCall } from "react-icons/bi";
-import logo from "../images/logo.png"
+import logo from "/images/logo.png"
 const Navbar = () => {
   const navItems =(<>
     <li><a href='/'>Home</a></li>
