@@ -6,6 +6,7 @@ const Banner = () => {
   return (
     <div className='section-container bg-gradient-to-r from-[#FAFAFA] from-0% to-[#FCFCFC] to-100%'>
       <div className='py-24 flex flex-col md:flex-row-reverse justify-between items-center gap-8'>
+        {/* Image */}
       <div className='md:w-1/2'>
           <img src={banner} alt="" />
           <div className='flex flex-col md:flex-row items-center justify-around -mt-14 gap-5'>
@@ -39,6 +40,8 @@ const Banner = () => {
             </div>
           </div>
         </div>
+        
+        {/* Text */}
         <div className='md:w-1/2 space-y-7 px-4'>
             <h2 className='md:text-5xl text-4xl font-bold leading-snug text-black'>Dive into Delights of Delictable <span className='text-green'>Food</span></h2>
             <p className='text-xl text-[#4A4A4A] '>Where Each Plate Weaves a Story of Culinary Mastery and Passionate Craftsmanhip</p>

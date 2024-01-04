@@ -30,7 +30,7 @@ const SpecialDishes = () => {
       const specials = data.filter((item)=>
         item.category === "popular"
       )
-      console.log(specials)
+      
       setRecipes(specials)
     });
   },[]);
@@ -87,7 +87,7 @@ const SpecialDishes = () => {
           <FaArrowRight className="w-8 h-8 p-1"/>
           </button>
         </div>
-        <Slider ref={slider} {...settings} className="overflow-hidden space-x-5 mt-10">
+        <Slider ref={slider} {...settings} className={`overflow-hidden space-x-5 mt-10`}>
           {
             recipes.map((item,i)=>(
               <Card key={i} item={item}/>
