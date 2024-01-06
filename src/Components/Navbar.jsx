@@ -1,22 +1,33 @@
-import React, { useState, useEffect } from "react";
-import { FaSearch } from "react-icons/fa";
+import React, { useState, useEffect, useContext } from "react";
+import { FaSearch, FaUser } from "react-icons/fa";
 import { BiSolidPhoneCall } from "react-icons/bi";
 import logo from "/images/logo.png";
-import { Link , useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import Login from "./ModalLogin";
+import { AuthContext } from "../contexts/AuthProvider";
 const Navbar = () => {
+  const {user} = useContext(AuthContext)
+  console.log(user)
   const location = useLocation();
   const navItems = (
     <>
       <li>
-        
-        <Link >
-          <summary className={`${location.pathname === "/" ? "text-green" : ""}`} to="/">Home</summary>
+        <Link>
+          <summary
+            className={`${location.pathname === "/" ? "text-green" : ""}`}
+            to="/"
+          >
+            Home
+          </summary>
         </Link>
-        
       </li>
       <li tabIndex={0}>
         <details>
-          <summary className={`${location.pathname === "/menu" ? " text-green" : ""}`}>Menu</summary>
+          <summary
+            className={`${location.pathname === "/menu" ? " text-green" : ""}`}
+          >
+            Menu
+          </summary>
           <ul className="p-2">
             <li>
               <Link to="/menu">All</Link>
@@ -128,10 +139,16 @@ const Navbar = () => {
               <span className="badge badge-sm indicator-item">8</span>
             </div>
           </div>
-          <a className="btn bg-green hover:text-black rounded-3xl text-white px-5 flex items-center gap-2 ">
+
+          {/* Login Button */}
+          <button
+            onClick={() => document.getElementById("my_modal_1").showModal()}
+            className="btn bg-green hover:text-black rounded-3xl text-white px-5 flex items-center gap-2 "
+          >
             {" "}
-            <BiSolidPhoneCall /> Contact
-          </a>
+            <FaUser /> Login
+          </button>
+          <Login/>
         </div>
       </div>
     </header>

@@ -5,6 +5,8 @@ import {
 import Main from "../layout/Main";
 import Home from "../pages/Home/Home";
 import Menu from "../pages/Shop/Menu";
+import ModalSignup from "../Components/ModalSignup";
+import Modal from "../Components/ModalLogin";
   
   const router = createBrowserRouter([
     {
@@ -17,10 +19,17 @@ import Menu from "../pages/Shop/Menu";
         },
         {
             path:'/menu',
-            element:<Menu/>
-        }
+            element:<Menu/>,
+            
+        },
+        
       ]
     },
+    {
+      path:'/signup',
+      element:<ModalSignup/>
+  },
+
   ]);
 
   export default router;
