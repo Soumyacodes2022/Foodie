@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { FaFacebookF, FaGithub, FaGoogle } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { AuthContext } from "../contexts/AuthProvider";
 const Modal = () => {
     const{
         register,
@@ -9,12 +10,45 @@ const Modal = () => {
         formState:{ errors },
         
     } = useForm();
+    const {signupWithGmail , loginwithEmail} = useContext(AuthContext)
+    const [errorMessage , setErrorMessage] = useState("");
 
-    const onSubmit = (data) => console.log(data);
+    //Redirecting on correct credentials
+    const location = useLocation();
+    const navigate = useNavigate();
+    const from = location.state?.from?.pathname || "/";
+
+    
+    //Using Email, Password Manually
+    const onSubmit = (data) => {
+      const email = data.email;
+      const password = data.password;
+      loginwithEmail(email,password).then((result)=>{
+        const user = result.user;
+        alert("Login Successful");
+        document.getElementById("my_modal_1").close();
+        navigate(from, {replace:true});
+      }).catch(
+        (error)=> {
+          const errorMessage = error.message;
+          setErrorMessage("Provide a correct Email and Password")
+        }
+      )
+    };
+
+
+    //Using Gmail
+    const handleLogin= () => {
+      signupWithGmail().then((result)=>{
+        const user = result.user;
+        alert("Login Successful");
+        navigate(from, {replace:true});
+      }).catch(error => console.log(error))
+    }
   return (
     <dialog id="my_modal_1" className="modal">
-      <div className="modal-box">
-      <div className="modal-action mt-0 flex flex-col justify-center">
+      <div className="modal-box overflow-hidden">
+      <div className="modal-action mt-0 flex flex-col justify-center ">
           <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
             <h3 className="font-bold text-2xl text-center">Welcome!</h3>
             {/* Email */}
@@ -47,6 +81,11 @@ const Modal = () => {
                 </a>
               </label>
             </div>
+            {/* Error */}
+            {
+              errorMessage ? <p className="text-red text-sm italic">{errorMessage}</p> : ""
+            }
+            {/* Login Button */}
             <div className="form-control ">
               <button
                 value="Login"
@@ -70,7 +109,7 @@ const Modal = () => {
           </form>
             {/* Social Sign in */}
             <div className="text-center space-x-3 mb-2">
-                <button className="btn btn-circle hover:bg-green hover:text-white">
+                <button className="btn btn-circle hover:bg-green hover:text-white" onClick={handleLogin}>
                     <FaGoogle/>
                 </button>
                 <button className="btn btn-circle hover:bg-green hover:text-white">

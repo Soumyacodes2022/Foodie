@@ -5,6 +5,7 @@ import logo from "/images/logo.png";
 import { Link, useLocation } from "react-router-dom";
 import Login from "./ModalLogin";
 import { AuthContext } from "../contexts/AuthProvider";
+import Profile from "./Profile";
 const Navbar = () => {
   const {user} = useContext(AuthContext)
   console.log(user)
@@ -141,13 +142,15 @@ const Navbar = () => {
           </div>
 
           {/* Login Button */}
-          <button
+          {
+            user ? <><Profile user={user}/></> : <button
             onClick={() => document.getElementById("my_modal_1").showModal()}
             className="btn bg-green hover:text-black rounded-3xl text-white px-5 flex items-center gap-2 "
           >
             {" "}
             <FaUser /> Login
           </button>
+          }
           <Login/>
         </div>
       </div>
