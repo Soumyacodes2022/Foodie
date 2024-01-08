@@ -1,6 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { AuthContext } from '../contexts/AuthProvider'
 
 const Profile = ({user}) => {
+    const {logOut}  = useContext(AuthContext)
+    const handleLogOut = () => {
+        logOut().then(()=>{
+
+        }).catch(error =>{
+
+        })
+    }
     return (
         <div>
 
@@ -20,10 +29,10 @@ const Profile = ({user}) => {
                     <label htmlFor="my-drawer-4" aria-label="close sidebar" className="drawer-overlay"></label>
                     <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
                         {/* Sidebar content here */}
-                        <li><a>Profile</a></li>
+                        <li><a href='/update-profile'>Profile</a></li>
                         <li><a>Order</a></li>
                         <li><a>Settings</a></li>
-                        <li><a>Log Out</a></li>
+                        <li><a onClick={handleLogOut}>Log Out</a></li>
 
                     </ul>
                 </div>

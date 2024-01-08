@@ -13,11 +13,13 @@ const AuthProvider = ({children}) => {
 
     //create User
     const createUser =  (email,password) => {
+      setLoading(true);
         return createUserWithEmailAndPassword(auth,email,password);
     }
 
     //sign in with Gmail
     const signupWithGmail=()=>{
+      setLoading(true);
         return signInWithPopup(auth , googleProvider)
     }
 
@@ -41,13 +43,10 @@ const AuthProvider = ({children}) => {
     //check user sign in
     useEffect(()=>{
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            if (currentUser) {
+           
               setUser(currentUser);
               setLoading(false);
-            } else {
-              // User is signed out
-              // ...
-            }
+            
           })
           return ()=>{
             return unsubscribe()

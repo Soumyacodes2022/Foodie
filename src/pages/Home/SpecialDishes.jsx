@@ -40,8 +40,8 @@ const SpecialDishes = () => {
     dots: true,
     infinite: false,
     speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 4,
+    slidesToShow: 3,
+    slidesToScroll: 3,
     initialSlide: 0,
     responsive: [
       {
@@ -79,7 +79,7 @@ const SpecialDishes = () => {
       <div className="text-start">
         <div className="Subtitle">Special Dishes</div>
         <div className="Title md:w-[25rem]">Standout Dishes From Our Menu</div>
-        <div className="md:absolute right-32 top-[1520px] mb-10 md:mr-24">
+        <div className="md:flex justify-end">
           <button onClick={()=>slider?.current?.slickPrev()} className="btn p-2 rounded-full ml-5">
             <FaArrowLeft className="w-8 h-8 p-1"/>
           </button>
@@ -87,7 +87,7 @@ const SpecialDishes = () => {
           <FaArrowRight className="w-8 h-8 p-1"/>
           </button>
         </div>
-        <Slider ref={slider} {...settings} className={`overflow-hidden space-x-5 mt-10`}>
+        <Slider ref={slider} {...settings} className={` -space-x-12 mt-10`}>
           {
             recipes.map((item,i)=>(
               <Card key={i} item={item}/>

@@ -9,23 +9,26 @@ import Loading from "../Components/Loading";
 const Main = () => {
   const {loading} = useContext(AuthContext)
   return (
+    
     <div>
       {
-        loading ? <Loading/> : <div>
-        <nav>
-          <Navbar />
-        </nav>
-        <div className="min-h-screen">
-          <Outlet />
-        </div>
-  
-        <footer>
-          <Footer />
-        </footer>
-        </div>
+        loading ? <Loading/> : 
+      <div> 
+        <Navbar />
+        <Outlet />
+        <Footer />
+      </div>
+      
+
+      
+      
       }
+        
+        
+      
       
     </div>
+    
   );
 };
 

@@ -7,6 +7,8 @@ import Home from "../pages/Home/Home";
 import Menu from "../pages/Shop/Menu";
 import ModalSignup from "../Components/ModalSignup";
 import Modal from "../Components/ModalLogin";
+import PrivateRouter from "../PrivateRouter/PrivateRouter";
+import Update_Profile from "../pages/Dashboard/Update-Profile";
   
   const router = createBrowserRouter([
     {
@@ -19,9 +21,13 @@ import Modal from "../Components/ModalLogin";
         },
         {
             path:'/menu',
-            element:<Menu/>,
+            element: <PrivateRouter> <Menu/> </PrivateRouter> ,
             
         },
+        {
+          path:'/update-profile',
+          element: <Update_Profile/>
+        }
         
       ]
     },
