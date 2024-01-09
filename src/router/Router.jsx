@@ -9,6 +9,7 @@ import ModalSignup from "../Components/ModalSignup";
 import Modal from "../Components/ModalLogin";
 import PrivateRouter from "../PrivateRouter/PrivateRouter";
 import Update_Profile from "../pages/Dashboard/Update-Profile";
+import CartPage from "../pages/Shop/CartPage";
   
   const router = createBrowserRouter([
     {
@@ -27,6 +28,10 @@ import Update_Profile from "../pages/Dashboard/Update-Profile";
         {
           path:'/update-profile',
           element: <Update_Profile/>
+        },
+        {
+          path:'/cart-items',
+          element:<CartPage/>
         }
         
       ]
