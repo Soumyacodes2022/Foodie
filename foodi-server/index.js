@@ -33,17 +33,25 @@ async function run() {
     const menuCollections = client.db("foodi-db").collection("menus")
     const cartCollections = client.db("foodi-db").collection("cartItems")
 
-    //get The Cart Items
+    //get The menu Items
     app.get('/menu', async(req,res)=>{
       const result = await menuCollections.find().toArray();
       res.send(result)
     })
 
-    //post Cart Items To FrontEnd
+    //post Cart Items To db
     app.post('/carts', async(req,res)=>{
       const cartItem = req.body;
       const result = await cartCollections.insertOne(cartItem);
       res.send(result)
+    })
+
+    //get the cart items in frontend
+    app.get('/carts', async(req,res)=>{
+      const email = req.query.email;
+      const filter = {email: email};
+      const result = await cartCollections.find(filter).toArray();
+      res.send(result);
     })
 
     await client.db("admin").command({ ping: 1 });
