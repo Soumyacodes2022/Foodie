@@ -33,6 +33,9 @@ const Card = ({ item }) => {
       })
         .then((res) => res.json())
         .then((data) => {
+          if(data.insertedId){
+
+          
           Swal.fire({
             position: "top-end",
             icon: "success",
@@ -40,17 +43,18 @@ const Card = ({ item }) => {
             showConfirmButton: false,
             timer: 1500
           });
+        }
         });
     }
     else{
       Swal.fire({
         title: "Please Login to Continue!",
-        text: "Login or Create an Account to add cart items",
+        text: "Login or Create an Account to use this feature",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Continue"
+        confirmButtonText: "Signup Now!"
       }).then((result) => {
         if (result.isConfirmed) {
           navigate('/signup',{state:{from:location}})
