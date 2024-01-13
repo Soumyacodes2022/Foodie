@@ -14,10 +14,10 @@ app.use(express.json())
 //mongodb config file
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@food-cluster.ogyaqml.mongodb.net/?retryWrites=true&w=majority`;
+
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
+const client = new MongoClient(process.env.DB_URI, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
@@ -73,6 +73,37 @@ async function run() {
     app.delete('/carts', async(req,res)=>{
       const result = await cartCollections.drop();
       res.send(result)
+    })
+
+    //Update items of cart
+    app.put('/carts/:id', async(req,res)=>{
+      try{
+      const id = req.params.id;
+      if (!ObjectId.isValid(id)) {
+        return res.status(400).json({ error: 'Invalid ObjectId format' });
+      }
+      const {quantity} = req.body;
+      const filter = {_id: new ObjectId(id)};
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          quantity: parseInt(quantity, 10),
+        },
+      };
+      console.log(filter)
+      console.log(updateDoc)
+      const result = await cartCollections.updateOne(filter,options,updateDoc);
+      if(updateDoc){
+        res.json(updateDoc.value);
+      }
+      else{
+        res.status(404).json({error: "Document not found"});
+      }
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+
     })
       
 
