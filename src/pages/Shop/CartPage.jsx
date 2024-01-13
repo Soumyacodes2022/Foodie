@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import useCart from "../../hooks/useCart";
 import { FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
@@ -6,8 +6,42 @@ import { AuthContext } from "../../contexts/AuthProvider";
 
 const CartPage = () => {
   const [refetch, cart] = useCart();
-  console.log(cart);
-  const {user} = useContext(AuthContext)
+  console.log(cart)
+  const { user } = useContext(AuthContext);
+  const [ cartItems, setCartItems ] =  useState([]);
+
+  const calculatePrice = (item) => {
+    return item.price * item.quantity ;
+  }
+  
+  const handlePlus = (item) => {
+    // console.log(item._id);
+   
+  }
+  const handleMinus = (item) => {
+    // console.log(item._id);
+    fetch(`http://localhost:3000/carts/${item._id}`,{
+      method:"PUT",
+      headers:{
+        "Content-type":"application/json ; charset=UTF-8"
+      },
+      body: JSON.stringify({quantity : item.quantity - 1})
+    }).then(res=>res.json()).then((data)=>{
+      const updateData = cartItems.map((cartItem)=>{
+        if(cartItem.id === item.id){
+          return{
+            ...cartItem , 
+            quantity: cartItem.quantity - 1
+          }
+        }
+        return cartItem;
+      })
+      refetch();
+      setCartItems(updateData);
+      console.log(updateData)
+    })
+    refetch();
+  }
   //Delete an Item from cart
   const handleDelete = (item) => {
     Swal.fire({
@@ -96,7 +130,7 @@ const CartPage = () => {
             <tbody>
               {/* row 1 */}
               {cart.map((item, index) => (
-                <>
+                
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td>
@@ -112,8 +146,12 @@ const CartPage = () => {
                       </div>
                     </td>
                     <td className="font-bold">{item.name}</td>
-                    <td>{item.quantity}</td>
-                    <td>{item.price}</td>
+                    <td>
+                      <button className="btn btn-xs" onClick={()=> handleMinus(item)}>-</button>
+                      <input type="number" value={item.quantity} onChange={()=>console.log(item.quantity)} className="w-10 mx-2 text-center overflow-hidden appearance-none"/>
+                      <button className="btn btn-xs" onClick={()=> handlePlus(item)}>+</button>
+                    </td>
+                    <td>${calculatePrice(item).toFixed(2)}</td>
 
                     <th>
                       <button
@@ -124,7 +162,7 @@ const CartPage = () => {
                       </button>
                     </th>
                   </tr>
-                </>
+                
               ))}
             </tbody>
           </table>
@@ -137,27 +175,43 @@ const CartPage = () => {
                   Here{" "}
                 </span>{" "}
               </h2>
-              <p className="flex justify-center items-center font-medium my-1">Add your items to the cart to Purchase.<span className="text-green px-2"> Happy Dinner!</span></p>
+              <p className="flex flex-col md:flex-row justify-center items-center font-medium my-1">
+                Add your items to the cart to Purchase.
+                <span className="text-green px-2"> Happy Dinner!</span>
+              </p>
             </div>
           ) : (
             ""
           )}
           <div className="flex justify-end my-5">
             <button
-              className={`btn btn-ghost btn-sm bg-red text-white text-sm ${
+              className={`btn btn-ghost btn-sm bg-red text-white hover:text-red text-sm ${
                 cart.length === 0 ? "none" : ""
               }`}
               onClick={handleDeleteAll}
             >
               <FaTrash />{" "}
-              <span className="text-white text-sm font-medium">Delete All</span>
+              <span className=" text-sm font-medium">Delete All</span>
             </button>
           </div>
         </div>
       </div>
       {/* Customer Details */}
-      <div>
-      {/* TODO */}
+      <div className="my-12 flex flex-col md:flex-row justify-between items-start">
+        <div className="md:w-1/2 space-y-3 my-4 md:my-1">
+          <h3 className="font-semibold"> Customer Details</h3>
+          <p>Name: {user.displayName}</p>
+          <p>Email: {user.email}</p>
+          <p>User_id: {user.uid}</p>
+        </div>
+        <div className="md:w-1/2 space-y-3">
+          <h3 className="font-semibold"> Shipping Details</h3>
+          <p>Total Items: {cart.length}</p>
+          <p>Total Price: $0.00</p>
+          <button className="btn btn-ghost bg-green text-white hover:text-black">
+            Proceed to Checkout
+          </button>
+        </div>
       </div>
     </div>
   );
