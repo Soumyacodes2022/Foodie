@@ -92,7 +92,7 @@ async function run() {
       };
       console.log(filter)
       console.log(updateDoc)
-      const result = await cartCollections.updateOne(filter,options,updateDoc);
+      const result = await cartCollections.updateOne(filter,updateDoc,options);
       if(updateDoc){
         res.json(updateDoc.value);
       }
