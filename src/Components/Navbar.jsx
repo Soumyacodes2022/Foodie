@@ -149,7 +149,8 @@ const Navbar = () => {
 
           {/* Login Button */}
           {
-            user ? <><Profile user={user}/></> : <button
+            user ? <><Profile user={user}/></> : 
+            <button
             onClick={() => document.getElementById("my_modal_1").showModal()}
             className="btn bg-green hover:text-black rounded-3xl text-white px-5 flex items-center gap-2 "
           >

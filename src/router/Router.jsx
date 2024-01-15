@@ -31,7 +31,7 @@ import CartPage from "../pages/Shop/CartPage";
         },
         {
           path:'/cart-items',
-          element:<CartPage/>
+          element:<PrivateRouter><CartPage/></PrivateRouter>
         }
         
       ]

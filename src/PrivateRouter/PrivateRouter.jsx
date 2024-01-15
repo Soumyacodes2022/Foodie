@@ -25,7 +25,7 @@ const PrivateRouter = ({children}) => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Continue"
+      confirmButtonText: "Login Now!"
     }).then((result) => {
       if (result.isConfirmed) {
         navigate('/signup',{state:{from:location}})

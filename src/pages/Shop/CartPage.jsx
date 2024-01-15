@@ -6,27 +6,53 @@ import { AuthContext } from "../../contexts/AuthProvider";
 
 const CartPage = () => {
   const [refetch, cart] = useCart();
-  console.log(cart)
   const { user } = useContext(AuthContext);
   const [ cartItems, setCartItems ] =  useState([]);
 
+  //Calculate the cartitem price
   const calculatePrice = (item) => {
     return item.price * item.quantity ;
   }
-  
+
+
+  //Plus button function
   const handlePlus = (item) => {
-    // console.log(item._id);
-   
-  }
-  const handleMinus = (item) => {
     // console.log(item._id);
     fetch(`http://localhost:3000/carts/${item._id}`,{
       method:"PUT",
       headers:{
-        "Content-type":"application/json ; charset=UTF-8"
+        "Content-type":"application/json"
+      },
+      body: JSON.stringify({quantity : item.quantity + 1})
+    }).then(res=>res.json()).then(()=>{
+      const updateData = cartItems.map((cartItem)=>{
+        if(cartItem.id === item.id){
+          return{
+            ...cartItem , 
+            quantity: cartItem.quantity + 1
+          }
+        }
+        return cartItem;
+      })
+      refetch();
+      setCartItems(updateData);
+      
+    })
+    refetch();
+  }
+
+
+  //Minus button function
+  const handleMinus = (item) => {
+    // console.log(item._id);
+    if(item.quantity > 1){
+      fetch(`http://localhost:3000/carts/${item._id}`,{
+      method:"PUT",
+      headers:{
+        "Content-type":"application/json"
       },
       body: JSON.stringify({quantity : item.quantity - 1})
-    }).then(res=>res.json()).then((data)=>{
+    }).then(res=>res.json()).then(()=>{
       const updateData = cartItems.map((cartItem)=>{
         if(cartItem.id === item.id){
           return{
@@ -38,10 +64,17 @@ const CartPage = () => {
       })
       refetch();
       setCartItems(updateData);
-      console.log(updateData)
+      
     })
     refetch();
+    }
   }
+
+  //Calculate Total Price
+  const orderTotal = cart.reduce(function(total,item){
+    return total + calculatePrice(item);
+  },0) 
+
   //Delete an Item from cart
   const handleDelete = (item) => {
     Swal.fire({
@@ -71,6 +104,8 @@ const CartPage = () => {
       }
     });
   };
+
+  //Delete All Method
   const handleDeleteAll = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -100,7 +135,12 @@ const CartPage = () => {
     });
   };
   return (
+    
+
+    
+   
     <div className="section-container ">
+    
       {/* Banner */}
       <div className="bg-gradient-to-r from-[#FAFAFA] from-0% to-[#FCFCFC] to-100%">
         <div className="py-36 flex flex-col  justify-center items-center gap-8">
@@ -147,7 +187,7 @@ const CartPage = () => {
                     </td>
                     <td className="font-bold">{item.name}</td>
                     <td>
-                      <button className="btn btn-xs" onClick={()=> handleMinus(item)}>-</button>
+                      <button className="btn btn-xs" disabled = {item.quantity<1} onClick={()=> handleMinus(item)}>-</button>
                       <input type="number" value={item.quantity} onChange={()=>console.log(item.quantity)} className="w-10 mx-2 text-center overflow-hidden appearance-none"/>
                       <button className="btn btn-xs" onClick={()=> handlePlus(item)}>+</button>
                     </td>
@@ -207,13 +247,16 @@ const CartPage = () => {
         <div className="md:w-1/2 space-y-3">
           <h3 className="font-semibold"> Shipping Details</h3>
           <p>Total Items: {cart.length}</p>
-          <p>Total Price: $0.00</p>
+          <p>Total Price: ${orderTotal.toFixed(2)}</p>
           <button className="btn btn-ghost bg-green text-white hover:text-black">
             Proceed to Checkout
           </button>
         </div>
       </div>
+
     </div>
+            
+
   );
 };
 
