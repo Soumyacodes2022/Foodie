@@ -33,13 +33,20 @@ const Card = ({ item }) => {
       })
         .then((res) => res.json())
         .then((data) => {
-          if(data.insertedId){
+          if(data.createdData){
 
           
           Swal.fire({
-            position: "top-end",
             icon: "success",
             title: "Item Added to Cart",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+        if(data.failedData){
+          Swal.fire({
+            icon: "error",
+            title: "Item Already Added to the cart",
             showConfirmButton: false,
             timer: 1500
           });
