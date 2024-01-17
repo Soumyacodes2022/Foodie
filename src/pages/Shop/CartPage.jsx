@@ -6,6 +6,7 @@ import { AuthContext } from "../../contexts/AuthProvider";
 
 const CartPage = () => {
   const [refetch, cart] = useCart();
+  console.log(cart)
   const { user } = useContext(AuthContext);
   const [ cartItems, setCartItems ] =  useState([]);
 
@@ -77,16 +78,8 @@ const CartPage = () => {
 
   //Delete an Item from cart
   const handleDelete = (item) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
+    
+     
         fetch(`http://localhost:3000/carts/${item._id}`, {
           method: "DELETE",
         })
@@ -94,27 +87,23 @@ const CartPage = () => {
           .then((data) => {
             if (data.deletedCount > 0) {
               refetch();
-              Swal.fire({
-                title: "Deleted!",
-                text: "Your file has been deleted.",
-                icon: "success",
-              });
+              
             }
           });
-      }
-    });
+      
+    
   };
 
   //Delete All Method
   const handleDeleteAll = () => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      text: "Delete All items from the cart?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Yes, delete All!",
     }).then((result) => {
       if (result.isConfirmed) {
         fetch(`http://localhost:3000/carts`, {
@@ -126,7 +115,7 @@ const CartPage = () => {
               refetch();
               Swal.fire({
                 title: "Deleted!",
-                text: "Your file has been deleted.",
+                text: "All items has been deleted.",
                 icon: "success",
               });
             }

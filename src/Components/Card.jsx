@@ -45,7 +45,7 @@ const Card = ({ item }) => {
         }
         if(data.failedData){
           Swal.fire({
-            icon: "error",
+            icon: "warning",
             title: "Item Already Added to the cart",
             showConfirmButton: false,
             timer: 1500
