@@ -13,7 +13,7 @@
  //UserName: flash_7439
  //Password: L0fbidpX4kewX49H
 
- mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@foodi-cluster.3aqfpuy.mongodb.net/demo-foodi-client?retryWrites=true&w=majority`).then(console.log("Mongoose Connected Successfully.")).catch(error=>console.log(error.message));
+ mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@foodi-cluster.3aqfpuy.mongodb.net/demo-foodi-client?retryWrites=true&w=majority`).then(console.log("Mongoose Connected Successfully.")).catch(error=>console.log(error));
 
  //receive routes here
  const menuRoutes = require('./api/router/menuRouter')
