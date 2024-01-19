@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { AuthContext } from '../contexts/AuthProvider'
-
+import { Link } from 'react-router-dom'
 const Profile = ({user}) => {
     const {logOut}  = useContext(AuthContext)
     const handleLogOut = () => {
@@ -32,6 +32,8 @@ const Profile = ({user}) => {
                         <li><a href='/update-profile'>Profile</a></li>
                         <li><a>Order</a></li>
                         <li><a>Settings</a></li>
+                        {/* To Be Updated (Only for Admin) */}
+                        <li><Link to='/dashboard'>Dashboard</Link></li>
                         <li><a onClick={handleLogOut}>Log Out</a></li>
 
                     </ul>

@@ -10,6 +10,9 @@ import Modal from "../Components/ModalLogin";
 import PrivateRouter from "../PrivateRouter/PrivateRouter";
 import Update_Profile from "../pages/Dashboard/Update-Profile";
 import CartPage from "../pages/Shop/CartPage";
+import DashboardLayout from "../layout/DashboardLayout";
+import Dashboard from "../pages/Dashboard/admin/Dashboard";
+import Users from "../pages/Dashboard/admin/Users";
   
   const router = createBrowserRouter([
     {
@@ -39,7 +42,21 @@ import CartPage from "../pages/Shop/CartPage";
     {
       path:'/signup',
       element:<ModalSignup/>
-  },
+    },
+    {
+      path:'/dashboard',
+      element:<PrivateRouter><DashboardLayout/></PrivateRouter>,
+      children: [
+        {
+          path: '',
+          element:<Dashboard/>
+        },
+        {
+          path:'users',
+          element:<Users/>
+        }
+      ]
+    }
 
   ]);
 
