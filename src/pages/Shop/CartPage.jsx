@@ -6,7 +6,6 @@ import { AuthContext } from "../../contexts/AuthProvider";
 
 const CartPage = () => {
   const [refetch, cart] = useCart();
-  console.log(cart)
   const { user } = useContext(AuthContext);
   const [ cartItems, setCartItems ] =  useState([]);
 

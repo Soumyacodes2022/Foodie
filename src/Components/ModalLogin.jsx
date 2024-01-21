@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../contexts/AuthProvider";
 import Swal from "sweetalert2";
+import axios from "axios";
 const Modal = () => {
     const{
         register,
@@ -26,9 +27,16 @@ const Modal = () => {
       const password = data.password;
       loginwithEmail(email,password).then((result)=>{
         const user = result.user;
-        alert("Login Successfull");
-        document.getElementById("my_modal_1").close();
-        navigate(from, {replace:true});
+        const userInfo = {
+          name: data.name,
+          email: data.email
+        }
+        axios.post('http://localhost:3000/users',userInfo).then(()=>{
+  
+            alert("Logged In Successfully!");
+            document.getElementById("my_modal_1").close()
+            navigate(from,{replace:true})
+        })
       }).catch(
         (error)=> {
           const errorMessage = error.message;
@@ -39,12 +47,21 @@ const Modal = () => {
 
 
     //Using Gmail
-    const handleLogin= () => {
-      signupWithGmail().then((result)=>{
-        const user = result.user;
-        alert("Login Successfull");
-        navigate(from, {replace:true});
-      }).catch(error => console.log(error))
+    const handleRegister=(data)=>{
+      signupWithGmail().then((response)=>{
+        const user = response.user;
+        const userInfo = {
+          name: response?.user?.displayName,
+          email: response?.user?.email
+        }
+        axios.post('http://localhost:3000/users',userInfo).then(()=>{
+  
+            alert("Logged In Successfully!");
+            document.getElementById("my_modal_1").close()
+            navigate("/")
+  
+        })
+      }).catch(error=>console.log(error))
     }
   return (
     <dialog id="my_modal_1" className="modal">
@@ -110,7 +127,7 @@ const Modal = () => {
           </form>
             {/* Social Sign in */}
             <div className="text-center space-x-3 mb-2">
-                <button className="btn btn-circle hover:bg-green hover:text-white" onClick={handleLogin}>
+                <button className="btn btn-circle hover:bg-green hover:text-white" onClick={handleRegister}>
                     <FaGoogle/>
                 </button>
                 <button className="btn btn-circle hover:bg-green hover:text-white">
