@@ -31,12 +31,12 @@ const AuthProvider = ({children}) => {
 
     //logout of a User
     const logOut = () => {
-        signOut(auth);
+       return signOut(auth);
     }
 
     //update a User's Profile
     const updateUserProfile= (name,photoURL) => {
-        updateProfile(auth.currentUser,{
+     return  updateProfile(auth.currentUser,{
             displayName: name , photoURL: photoURL  
         })    
     }

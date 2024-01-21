@@ -9,6 +9,7 @@ const Modal = () => {
     const{
         register,
         handleSubmit,
+        reset,
         formState:{ errors },
         
     } = useForm();
@@ -43,6 +44,7 @@ const Modal = () => {
           setErrorMessage("Provide a correct Email and Password")
         }
       )
+      reset()
     };
 
 

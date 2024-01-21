@@ -32,17 +32,17 @@ const ModalSignup = () => {
         // Signed up
         const user = result.user;
         updateUserProfile(data.email, data.photoURL).then((result1) => {
-          console.log(result1)
-          // const userInfor = {
-          //   name: data.name,
-          //   email: data.email,
-          // }; 
-          // axios.post('http://localhost:3000/users', userInfor)
-          //   .then((response) => {
-          //     // console.log(response);
-          //     alert("Signup successful!");
-          //     navigate(from, { replace: true });
-          //   });
+          // console.log(result1)
+          const userInfor = {
+            name: data.name,
+            email: data.email,
+          }; 
+          axios.post('http://localhost:3000/users', userInfor)
+            .then((response) => {
+              // console.log(response);
+              alert("Signup successful!");
+              navigate(from, { replace: true });
+            });
         });
       })
       .catch((error) => {
