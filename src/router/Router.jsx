@@ -13,6 +13,7 @@ import CartPage from "../pages/Shop/CartPage";
 import DashboardLayout from "../layout/DashboardLayout";
 import Dashboard from "../pages/Dashboard/admin/Dashboard";
 import Users from "../pages/Dashboard/admin/Users";
+import Login from "../Components/Login";
   
   const router = createBrowserRouter([
     {
@@ -42,6 +43,10 @@ import Users from "../pages/Dashboard/admin/Users";
     {
       path:'/signup',
       element:<ModalSignup/>
+    },
+    {
+      path:'/login',
+      element:<Login/>
     },
     {
       path:'/dashboard',

@@ -3,9 +3,9 @@ import { FaFacebookF, FaGithub, FaGoogle } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import axios from "axios";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 import useAuth from "../hooks/useAuth";
-const Modal = () => {
+const Login = () => {
     const{
         register,
         handleSubmit,
@@ -15,7 +15,7 @@ const Modal = () => {
     } = useForm();
     const {signupWithGmail , loginwithEmail} = useAuth();
     const [errorMessage , setErrorMessage] = useState("");
-    
+    const axiosPublic = useAxiosPublic();
     //Redirecting on correct credentials
     const location = useLocation();
     const navigate = useNavigate();
@@ -32,7 +32,7 @@ const Modal = () => {
           name: data.name,
           email: data.email
         }
-        axios.post('http://localhost:3000/users',userInfo).then(()=>{
+        axiosPublic.post('/users',userInfo).then(()=>{
   
             alert("Logged In Successfully!");
             document.getElementById("my_modal_1").close()
@@ -56,7 +56,7 @@ const Modal = () => {
           name: response?.user?.displayName,
           email: response?.user?.email
         }
-        axios.post('http://localhost:3000/users',userInfo).then(()=>{
+        axiosPublic.post('/users',userInfo).then(()=>{
   
             alert("Logged In Successfully!");
             document.getElementById("my_modal_1").close()
@@ -66,13 +66,17 @@ const Modal = () => {
       }).catch(error=>console.log(error))
     }
   return (
-    <dialog id="my_modal_1" className="modal">
-      <div className="modal-box overflow-hidden">
-      <div className="modal-action mt-0 flex flex-col justify-center ">
-          <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
-            <h3 className="font-bold text-2xl text-center">Welcome!</h3>
-            {/* Email */}
-            <div className="form-control" method="dialog">
+    <div className="max-w-md bg-white shadow w-full mx-auto flex items-center justify-center my-20">
+    <div className="mb-5">
+    <form
+            className="card-body"
+            method="dialog"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <h3 className="font-bold text-lg">Please Login!</h3>
+
+            {/* email */}
+            <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
               </label>
@@ -80,70 +84,75 @@ const Modal = () => {
                 type="email"
                 placeholder="email"
                 className="input input-bordered"
-                
                 {...register("email")}
               />
             </div>
-            {/* Password */}
+
+            {/* password */}
             <div className="form-control">
-              <label className="label ">
+              <label className="label">
                 <span className="label-text">Password</span>
               </label>
               <input
                 type="password"
                 placeholder="password"
                 className="input input-bordered"
-                {...register("password")}
+                {...register("password", { required: true })}
               />
-              <label className="label mt-1">
-                <a href="#" className="label-text-alt link link-hover">
+              <label className="label">
+                <a href="#" className="label-text-alt link link-hover mt-2">
                   Forgot password?
                 </a>
               </label>
             </div>
-            {/* Error */}
-            {
-              errorMessage ? <p className="text-red text-sm italic">{errorMessage}</p> : ""
-            }
-            {/* Login Button */}
-            <div className="form-control ">
-              <button
+
+            {/* show errors */}
+            {errorMessage ? (
+              <p className="text-red text-xs italic">
+                Provide a correct username & password.
+              </p>
+            ) : (
+              ""
+            )}
+
+            {/* submit btn */}
+            <div className="form-control mt-4">
+              <input
+                type="submit"
+                className="btn bg-green text-white"
                 value="Login"
-                className="btn bg-green text-white hover:text-black"
-              >
-                Login
-              </button>
+              />
             </div>
+
+            {/* close btn */}
+            <Link to="/">
+            <div
+              className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+            >
+              ✕
+            </div></Link>
+
             <p className="text-center my-2">
-              Don't have an Account?{" "}
-              <Link to="/signup" className="hover:underline ml-1 text-red">
+              Donot have an account?
+              <Link to="/signup" className="underline text-red ml-1">
                 Signup Now
               </Link>
             </p>
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-                    htmlFor="my_modal_1"
-                    onClick={() => document.getElementById("my_modal_1").close()}>
-                      ✕
-            </button>
-
           </form>
-            {/* Social Sign in */}
-            <div className="text-center space-x-3 mb-2">
-                <button className="btn btn-circle hover:bg-green hover:text-white" onClick={handleRegister}>
-                    <FaGoogle/>
-                </button>
-                <button className="btn btn-circle hover:bg-green hover:text-white">
-                    <FaFacebookF/>
-                </button>
-                <button className="btn btn-circle hover:bg-green hover:text-white">
-                    <FaGithub/>
-                </button>
-            </div>
-        </div>
-        
+    <div className="text-center space-x-3">
+        <button onClick={handleRegister} className="btn btn-circle hover:bg-green hover:text-white">
+          <FaGoogle />
+        </button>
+        <button className="btn btn-circle hover:bg-green hover:text-white">
+          <FaFacebookF />
+        </button>
+        <button className="btn btn-circle hover:bg-green hover:text-white">
+          <FaGithub />
+        </button>
       </div>
-    </dialog>
+    </div>
+  </div>
   );
 };
 
-export default Modal;
+export default Login;

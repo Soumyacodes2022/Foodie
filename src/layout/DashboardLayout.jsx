@@ -3,6 +3,9 @@ import { Link, Outlet } from 'react-router-dom'
 import { MdDashboard, MdDashboardCustomize, MdMenu } from "react-icons/md";
 import { FaArrowAltCircleRight, FaEdit, FaHome, FaLocationArrow, FaPlusCircle, FaQuestion, FaQuestionCircle, FaRegUser, FaShoppingBag, FaUser, FaUsers } from 'react-icons/fa';
 import logo from "/images/logo.png"
+import Login from '../Components/Login';
+import useAdmin from '../hooks/useAdmin';
+import useAuth from '../hooks/useAuth';
 const DashboardLayout = () => {
     const sharedLink = (
     <>        
@@ -12,9 +15,13 @@ const DashboardLayout = () => {
       <li><Link to="/dashboard"><FaQuestionCircle/>Customer Support</Link></li>
     </>
     )
-
+      const  {loading} = useAuth();
+      const [isAdmin , isAdminLoading] = useAdmin();
   return (
     <div>
+      {
+        isAdmin ? (
+          <div>
       <div className="drawer lg:drawer-open ">
   <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
   <div className="drawer-content flex flex-col md:items-start md:justify-start my-2">
@@ -53,6 +60,9 @@ const DashboardLayout = () => {
   
   </div>
 </div>
+    </div>
+        ) : (<Login/>)
+      }
     </div>
   )
 }

@@ -1,8 +1,8 @@
-import React, { useContext } from 'react'
-import { AuthContext } from '../contexts/AuthProvider'
+import React from 'react'
 import { Link } from 'react-router-dom'
+import useAuth from '../hooks/useAuth'
 const Profile = ({user}) => {
-    const {logOut}  = useContext(AuthContext)
+    const {logOut}  = useAuth()
     const handleLogOut = () => {
         logOut().then(()=>{
 
@@ -29,7 +29,7 @@ const Profile = ({user}) => {
                     <label htmlFor="my-drawer-4" aria-label="close sidebar" className="drawer-overlay"></label>
                     <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
                         {/* Sidebar content here */}
-                        <li><a href='/update-profile'>Profile</a></li>
+                        <li><Link to='/update-profile'>Profile</Link></li>
                         <li><a>Order</a></li>
                         <li><a>Settings</a></li>
                         {/* To Be Updated (Only for Admin) */}

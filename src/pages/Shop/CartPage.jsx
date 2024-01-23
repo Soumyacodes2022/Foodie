@@ -2,95 +2,101 @@ import React, { useContext, useState } from "react";
 import useCart from "../../hooks/useCart";
 import { FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
-import { AuthContext } from "../../contexts/AuthProvider";
+import axios from "axios";
+import useAuth from "../../hooks/useAuth";
 
 const CartPage = () => {
-  const [refetch, cart] = useCart();
-  const { user } = useContext(AuthContext);
-  const [ cartItems, setCartItems ] =  useState([]);
+  const [cart, refetch] = useCart();
+  console.log(cart);
+  const { user } = useAuth();
+  const [cartItems, setCartItems] = useState([]);
 
   //Calculate the cartitem price
   const calculatePrice = (item) => {
-    return item.price * item.quantity ;
-  }
-
+    return item.price * item.quantity;
+  };
 
   //Plus button function
-  const handlePlus = (item) => {
+  const handlePlus = async (item) => {
     // console.log(item._id);
-    fetch(`http://localhost:3000/carts/${item._id}`,{
-      method:"PUT",
-      headers:{
-        "Content-type":"application/json"
+  try {
+    const response = await  fetch(`http://localhost:3000/carts/${item._id}`, {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json",
       },
-      body: JSON.stringify({quantity : item.quantity + 1})
-    }).then(res=>res.json()).then(()=>{
-      const updateData = cartItems.map((cartItem)=>{
-        if(cartItem.id === item.id){
-          return{
-            ...cartItem , 
-            quantity: cartItem.quantity + 1
-          }
-        }
-        return cartItem;
-      })
-      refetch();
-      setCartItems(updateData);
-      
+      body: JSON.stringify({ quantity: item.quantity + 1 }),
     })
-    refetch();
+        if(response.ok){
+          const updateData = cartItems.map((cartItem) => {
+            if (cartItem.id === item.id) {
+              return {
+                ...cartItem,
+                quantity: cartItem.quantity + 1,
+              };
+            }
+            return cartItem;
+          })
+          await refetch();
+          setCartItems(updateData);
+        }else{
+          console.error("Failed to update quantity");
+        }
+  } catch (error) {
+    console.error("Error updating quantity:", error);
   }
-
+        
+  };
 
   //Minus button function
-  const handleMinus = (item) => {
+  const handleMinus = async(item) => {
     // console.log(item._id);
-    if(item.quantity > 1){
-      fetch(`http://localhost:3000/carts/${item._id}`,{
-      method:"PUT",
-      headers:{
-        "Content-type":"application/json"
+    if(item.quantity>1){
+
+    
+    try {
+    const response = await  fetch(`http://localhost:3000/carts/${item._id}`, {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json",
       },
-      body: JSON.stringify({quantity : item.quantity - 1})
-    }).then(res=>res.json()).then(()=>{
-      const updateData = cartItems.map((cartItem)=>{
-        if(cartItem.id === item.id){
-          return{
-            ...cartItem , 
-            quantity: cartItem.quantity - 1
-          }
-        }
-        return cartItem;
-      })
-      refetch();
-      setCartItems(updateData);
-      
+      body: JSON.stringify({ quantity: item.quantity - 1 }),
     })
-    refetch();
-    }
+        if(response.ok){
+          const updateData = cartItems.map((cartItem) => {
+            if (cartItem.id === item.id) {
+              return {
+                ...cartItem,
+                quantity: cartItem.quantity - 1,
+              };
+            }
+            return cartItem;
+          })
+          await refetch();
+          setCartItems(updateData);
+        }else{
+          console.error("Failed to update quantity");
+        }
+  } catch (error) {
+    console.error("Error updating quantity:", error);
   }
+        
+}
+  };
 
   //Calculate Total Price
-  const orderTotal = cart.reduce(function(total,item){
+  const cartSubTotal = cart.reduce((total, item) => {
     return total + calculatePrice(item);
-  },0) 
+  }, 0);
 
+  const orderTotal = cartSubTotal;
   //Delete an Item from cart
   const handleDelete = (item) => {
-    
-     
-        fetch(`http://localhost:3000/carts/${item._id}`, {
-          method: "DELETE",
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.deletedCount > 0) {
-              refetch();
-              
-            }
-          });
-      
-    
+    axios.delete(`http://localhost:3000/carts/${item._id}`).then((res) => {
+      if (res) {
+        refetch();
+      }
+    });
   };
 
   //Delete All Method
@@ -105,30 +111,21 @@ const CartPage = () => {
       confirmButtonText: "Yes, delete All!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:3000/carts`, {
-          method: "DELETE",
-        })
-          .then((res) => res.json())
-          .then(() => {
-            if (true) {
-              refetch();
-              Swal.fire({
-                title: "Deleted!",
-                text: "All items has been deleted.",
-                icon: "success",
-              });
-            }
-          });
+        axios.delete(`http://localhost:3000/carts`).then((res) => {
+          if (res) {
+            refetch();
+            Swal.fire({
+              title: "Deleted!",
+              text: "All items has been deleted.",
+              icon: "success",
+            });
+          }
+        });
       }
     });
   };
   return (
-    
-
-    
-   
     <div className="section-container ">
-    
       {/* Banner */}
       <div className="bg-gradient-to-r from-[#FAFAFA] from-0% to-[#FCFCFC] to-100%">
         <div className="py-36 flex flex-col  justify-center items-center gap-8">
@@ -158,39 +155,53 @@ const CartPage = () => {
             <tbody>
               {/* row 1 */}
               {cart.map((item, index) => (
-                
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>
-                      <div className="flex items-center gap-3">
-                        <div className="avatar">
-                          <div className="mask mask-squircle w-12 h-12">
-                            <img
-                              src={item.image}
-                              alt="Avatar Tailwind CSS Component"
-                            />
-                          </div>
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>
+                    <div className="flex items-center gap-3">
+                      <div className="avatar">
+                        <div className="mask mask-squircle w-12 h-12">
+                          <img
+                            src={item.image}
+                            alt="Avatar Tailwind CSS Component"
+                          />
                         </div>
                       </div>
-                    </td>
-                    <td className="font-bold">{item.name}</td>
-                    <td>
-                      <button className="btn btn-xs" disabled = {item.quantity<1} onClick={()=> handleMinus(item)}>-</button>
-                      <input type="number" value={item.quantity} onChange={()=>console.log(item.quantity)} className="w-10 mx-2 text-center overflow-hidden appearance-none"/>
-                      <button className="btn btn-xs" onClick={()=> handlePlus(item)}>+</button>
-                    </td>
-                    <td>${calculatePrice(item).toFixed(2)}</td>
+                    </div>
+                  </td>
+                  <td className="font-bold">{item.name}</td>
+                  <td>
+                    <button
+                      className="btn btn-xs"
+                      disabled={item.quantity < 1}
+                      onClick={() => handleMinus(item)}
+                    >
+                      -
+                    </button>
+                    <input
+                      type="number"
+                      value={item.quantity}
+                      onChange={() => console.log(item.quantity)}
+                      className="w-10 mx-2 text-center overflow-hidden appearance-none"
+                    />
+                    <button
+                      className="btn btn-xs"
+                      onClick={() => handlePlus(item)}
+                    >
+                      +
+                    </button>
+                  </td>
+                  <td>${calculatePrice(item).toFixed(2)}</td>
 
-                    <th>
-                      <button
-                        className="btn btn-ghost btn-xs text-red"
-                        onClick={() => handleDelete(item)}
-                      >
-                        <FaTrash />
-                      </button>
-                    </th>
-                  </tr>
-                
+                  <th>
+                    <button
+                      className="btn btn-ghost btn-xs text-red"
+                      onClick={() => handleDelete(item)}
+                    >
+                      <FaTrash />
+                    </button>
+                  </th>
+                </tr>
               ))}
             </tbody>
           </table>
@@ -241,10 +252,7 @@ const CartPage = () => {
           </button>
         </div>
       </div>
-
     </div>
-            
-
   );
 };
 

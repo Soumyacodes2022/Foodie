@@ -2,13 +2,16 @@ import React, { useCallback, useContext, useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthProvider";
+import useCart from "../hooks/useCart"
 import Swal from 'sweetalert2'
+import axios from "axios";
 
 
 const Card = ({ item }) => {
   const { name, recipe, image, price, _id } = item;
   const [isheartfiltered, setIsheartfiltered] = useState(false);
   const { user } = useContext(AuthContext);
+  const [cart, refetch] = useCart();
   const location = useLocation();
   const navigate = useNavigate();
   const handleAddToCart = (item) => {
@@ -24,51 +27,47 @@ const Card = ({ item }) => {
       };
       // console.log(cartItems)
 
-      fetch("http://localhost:3000/carts", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(cartItems),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if(data.createdData){
-
-          
-          Swal.fire({
-            icon: "success",
-            title: "Item Added to Cart",
-            showConfirmButton: false,
-            timer: 1500
-          });
+      axios.post("http://localhost:3000/carts", cartItems)
+        .then((res) => {
+          console.log(res);
+          if(res){
+            Swal.fire({
+              icon: "success",
+              title: "Item Added to Cart",
+              showConfirmButton: false,
+              timer: 1500
+            });
+          }
         }
-        if(data.failedData){
+        
+        ).catch((error)=>{
+          console.log(error.message);
+          const errorMsg = error.message;
           Swal.fire({
             icon: "warning",
-            title: "Item Already Added to the cart",
+            title: "Item Already In the Cart.",
             showConfirmButton: false,
             timer: 1500
           });
-        }
-        });
-    }
-    else{
-      Swal.fire({
-        title: "Please Login to Continue!",
-        text: "Login or Create an Account to use this feature",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Signup Now!"
-      }).then((result) => {
-        if (result.isConfirmed) {
-          navigate('/signup',{state:{from:location}})
-        }
-      });
-    }
-  };
+        })
+        
+  }
+  else{
+    Swal.fire({
+      title: "Please Login to Continue!",
+      text: "Login or Create an Account to use this feature",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Signup Now!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate('/signup',{state:{from:location}})
+      }
+    });
+  }
+}
   const handleheartclick = () => {
     setIsheartfiltered(!isheartfiltered);
   };

@@ -3,17 +3,18 @@ import { FaFacebookF, FaGithub, FaGoogle } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Modal from './ModalLogin';
-import { AuthContext } from '../contexts/AuthProvider';
 import axios from 'axios';
+import useAxiosPublic from '../hooks/useAxiosPublic';
+import useAuth from '../hooks/useAuth';
 
 const ModalSignup = () => {
   
 
-  const {createUser, updateUserProfile ,signupWithGmail} = useContext(AuthContext)
+  const {createUser, updateUserProfile ,signupWithGmail} = useAuth()
   const location = useLocation();
   const navigate= useNavigate();
   const from = location.state?.from?.pathname || "/"
-
+  const axiosPublic = useAxiosPublic()
   const {
     register,
     handleSubmit,
@@ -37,7 +38,7 @@ const ModalSignup = () => {
             name: data.name,
             email: data.email,
           }; 
-          axios.post('http://localhost:3000/users', userInfor)
+          axiosPublic.post('/users', userInfor)
             .then((response) => {
               // console.log(response);
               alert("Signup successful!");
@@ -60,7 +61,7 @@ const ModalSignup = () => {
         name: result?.user?.displayName,
         email: result?.user?.email
       }
-      axios.post('http://localhost:3000/users',userInfo).then((response)=>{
+      axiosPublic.post('/users',userInfo).then((response)=>{
 
           alert("Account Created Successfully!");
           document.getElementById("my_modal_1").close()

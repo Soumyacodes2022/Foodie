@@ -7,11 +7,12 @@ import Login from "./ModalLogin";
 import { AuthContext } from "../contexts/AuthProvider";
 import Profile from "./Profile";
 import useCart from "../hooks/useCart";
+import useAuth from "../hooks/useAuth";
 const Navbar = () => {
-  const {user} = useContext(AuthContext)
+  const {user} = useAuth();
   console.log(user)
 
-  const [refetch, cart] = useCart();
+  const [ cart,refetch] = useCart();
   const location = useLocation();
   const navItems = (
     <>
