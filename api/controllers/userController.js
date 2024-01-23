@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const User = require('../model/User');
 
 //get an user
@@ -48,12 +49,15 @@ const getAdmin = async(req,res)=> {
     const query = {email:email};
     try {
         const user = await User.findOne(query);
-        if(user !== req.decoded.email){
+        const token = req.headers.authorization.split(" ")[1]
+    const decoded = jwt.verify(token,process.env.ACCESS_SECRET_TOKEN);
+    req.decoded = decoded;
+        if(email !== req.decoded.email){
             return res.status(403).send({message: "Forbidden Access"})
         }
         let admin = false;
-        if(user.role === "admin"){
-            admin = true;
+        if(user){
+            admin = user?.role === "admin";
         }
         res.status(200).json({admin})
         
@@ -81,6 +85,7 @@ const makeAdmin = async(req,res)=> {
         res.status(500).json({message: error.message});
     }
 }
+
 
 module.exports = {
     getUser,
