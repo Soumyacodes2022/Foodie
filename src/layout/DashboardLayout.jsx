@@ -50,7 +50,7 @@ const DashboardLayout = () => {
       <hr />
       <li className='mt-3'><Link to="/dashboard"><MdDashboard/>Dashboard</Link></li>
       <li><Link to="/dashboard"><FaShoppingBag/>Manage Booking</Link></li>
-      <li><Link to="/dashboard"><FaPlusCircle/>Add Menu</Link></li>
+      <li><Link to="/dashboard/add-menu"><FaPlusCircle/>Add Menu</Link></li>
       <li><Link to="/dashboard"><FaEdit/>Manage items</Link></li>
       <li className='mb-3'><Link to="/dashboard/users"><FaUsers/>All Users</Link></li>
       <hr />

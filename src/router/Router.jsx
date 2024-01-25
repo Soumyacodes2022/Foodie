@@ -14,6 +14,7 @@ import DashboardLayout from "../layout/DashboardLayout";
 import Dashboard from "../pages/Dashboard/admin/Dashboard";
 import Users from "../pages/Dashboard/admin/Users";
 import Login from "../Components/Login";
+import AddMenu from "../pages/Dashboard/admin/AddMenu";
   
   const router = createBrowserRouter([
     {
@@ -59,6 +60,10 @@ import Login from "../Components/Login";
         {
           path:'users',
           element:<Users/>
+        },
+        {
+          path:'add-menu',
+          element:<AddMenu/>
         }
       ]
     }
