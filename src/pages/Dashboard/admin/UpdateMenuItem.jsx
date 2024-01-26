@@ -1,13 +1,19 @@
-import React from "react";
-import { FaUtensils } from "react-icons/fa";
+import React from 'react'
 import { useForm } from "react-hook-form";
+import { FaUtensils } from "react-icons/fa";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
-const AddMenu = () => {
+import { useLoaderData, useNavigate } from 'react-router-dom';
+
+
+const UpdateMenuItem = () => {
   const { register, handleSubmit, reset} = useForm();
+  const item = useLoaderData()
+  console.log(item)
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate()
   //Image Hosting Key
   // const image_hosting_key = import.meta.env.VITE_IMGBB_API_KEY
   // const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -27,17 +33,18 @@ const AddMenu = () => {
         price: parseFloat(data.price),
         recipe:data.recipe
       }
-      const postMenuItem = await axiosSecure.post('/menu', newMenuItem)
-      if(postMenuItem.status === 200){
+      const updatedMenuItem = await axiosSecure.patch(`/menu/${item._id}`, newMenuItem)
+      if(updatedMenuItem.status === 200){
         reset();
         Swal.fire({
-          title: "Added!",
-          text: "This Item has been Added to the Menu!",
+          title: "Updated!",
+          text: "This Item has been Updated in the Menu!",
           icon: "success",
           showConfirmButton: false,
           timer: 1500
         })
       }
+      navigate("/dashboard/manage-items")
     }
       }).catch((error)=>{
         console.log(error);
@@ -45,9 +52,10 @@ const AddMenu = () => {
   };
 
   return (
-    <div className="w-full md:w-[900px] px-4 mx-auto">
+    <div>
+      <div className="w-full md:w-[900px] px-4 mx-auto">
       <h2 className="text-2xl font-bold my-5">
-        Upload A New <span className=" text-green">Menu Item</span>
+        Update This <span className=" text-green">Menu Item</span>
       </h2>
       {/* Form Items */}
       <div>
@@ -59,6 +67,7 @@ const AddMenu = () => {
             </label>
             <input
               type="text"
+              defaultValue={item.name}
               placeholder="Recipe Name"
               className="input input-bordered w-full"
               {...register("name", { required: true })}
@@ -75,7 +84,7 @@ const AddMenu = () => {
               <select
                 className="select select-bordered w-full"
                 {...register("category", { required: true })}
-                defaultValue="default"
+                defaultValue={item.category}
               >
                 <option disabled value="default">
                   Select a Category
@@ -96,6 +105,7 @@ const AddMenu = () => {
               </div>
               <input
                 type="number"
+                defaultValue={item.price}
                 placeholder="Price"
                 className="input input-bordered w-full"
                 {...register("price", { required: true })}
@@ -112,6 +122,7 @@ const AddMenu = () => {
               <textarea
                 className="textarea textarea-bordered h-24"
                 placeholder="Tell Something about the recipe"
+                defaultValue={item.recipe}
                 {...register("recipe", { required: true })}
               ></textarea>
             </label>
@@ -128,13 +139,14 @@ const AddMenu = () => {
 
           {/* 5th Row */}
 
-          <button className="btn bg-green text-white hover:text-black w-1/3 md:w-1/6 px-5">
-            Add Item <FaUtensils />{" "}
+          <button className="btn bg-green text-white hover:text-black w-1/3 md:w-1/5 px-5" >
+            Update Item <FaUtensils />{" "}
           </button>
         </form>
       </div>
     </div>
-  );
-};
+    </div>
+  )
+}
 
-export default AddMenu;
+export default UpdateMenuItem
