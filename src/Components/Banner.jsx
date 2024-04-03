@@ -1,6 +1,7 @@
 import React from 'react'
 import banner from "/images/home/banner.png"
 import bfood from "/images/home/b-food1.png"
+import { Link } from 'react-router-dom'
 
 const Banner = () => {
   return (
@@ -45,7 +46,7 @@ const Banner = () => {
         <div className='md:w-1/2 space-y-7 px-4'>
             <h2 className='md:text-5xl text-4xl font-bold leading-snug text-black'>Dive into Delights of Delictable <span className='text-green'>Food</span></h2>
             <p className='text-xl text-[#4A4A4A] '>Where Each Plate Weaves a Story of Culinary Mastery and Passionate Craftsmanhip</p>
-            <button className="btn bg-green text-white hover:text-black rounded-full px-6 ">Order Now</button>
+            <Link to="/menu"><button className="btn bg-green text-white hover:text-black rounded-full px-6 my-6 ">Order Now</button></Link>
         </div>
         
       </div>

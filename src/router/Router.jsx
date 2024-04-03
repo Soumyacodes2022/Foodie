@@ -17,6 +17,7 @@ import Login from "../Components/Login";
 import AddMenu from "../pages/Dashboard/admin/AddMenu";
 import ManageMenuItems from "../pages/Dashboard/admin/ManageMenuItems";
 import UpdateMenuItem from "../pages/Dashboard/admin/UpdateMenuItem";
+import Payment from "../pages/Shop/Payment";
   
   const router = createBrowserRouter([
     {
@@ -39,6 +40,10 @@ import UpdateMenuItem from "../pages/Dashboard/admin/UpdateMenuItem";
         {
           path:'/cart-items',
           element:<PrivateRouter><CartPage/></PrivateRouter>
+        },
+        {
+          path:'/proceed-checkout',
+          element:<Payment/>
         }
         
       ]

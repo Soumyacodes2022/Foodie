@@ -4,6 +4,7 @@ import { FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
+import { Link } from "react-router-dom";
 
 const CartPage = () => {
   const [cart, refetch] = useCart();
@@ -247,9 +248,11 @@ const CartPage = () => {
           <h3 className="font-semibold"> Shipping Details</h3>
           <p>Total Items: {cart.length}</p>
           <p>Total Price: ${orderTotal.toFixed(2)}</p>
-          <button className="btn btn-ghost bg-green text-white hover:text-black">
+          <Link to="/proceed-checkout">
+          <button className="btn btn-ghost bg-green text-white hover:text-black my-4">
             Proceed to Checkout
           </button>
+          </Link>
         </div>
       </div>
     </div>

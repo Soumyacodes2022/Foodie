@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Card from "../../Components/Card";
 import { FaFilter } from "react-icons/fa";
 
@@ -9,6 +9,8 @@ const Menu = () => {
   const [sortItems, setSortItems] = useState("default");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(6);
+
+  const cardSection = useRef();
   //loading Data
   useEffect(() => {
     //fetching data from the backend
@@ -81,6 +83,11 @@ const Menu = () => {
   const currentItems = filteredItems.slice(indexofFirstItem, indexofLastItem);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+
+  const handleScroll = (elemRef) => {
+    window.scrollTo({top: elemRef.current.offsetTop, behavior:"smooth"
+    })
+  }
   return (
     <div className="section-container bg-gradient-to-r from-[#FAFAFA] from-0% to-[#FCFCFC] to-100%">
       <div className="py-48 flex flex-col  justify-center items-center gap-8">
@@ -94,7 +101,7 @@ const Menu = () => {
             Salad, Lasagne, Butternut Pumpkin, Tokusen Wagyu, Ollevus Revenus
             and more for a moderate cost
           </p>
-          <button className="btn bg-green text-white hover:text-black rounded-full px-6 ">
+          <button className="btn bg-green text-white hover:text-black rounded-full px-6 " onClick={()=>handleScroll(cardSection)}>
             Order Now
           </button>
         </div>
@@ -102,7 +109,7 @@ const Menu = () => {
       {/* Products */}
       <div className="">
         {/* Filtering and Sorting */}
-        <div className="flex flex-col md:flex-row flex-wrap md:justify-between items-center space-y-3 mb-8">
+        <div className="flex flex-col md:flex-row flex-wrap md:justify-between items-center space-y-3 mb-8" ref={cardSection}>
           {/* All Categories btns */}
           <div className="flex flex-row flex-wrap gap-4 md:gap-8 justify-start md:items-center my-8 font-semibold">
             <button
@@ -174,7 +181,7 @@ const Menu = () => {
             </select>
           </div>
         </div>
-        <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-12">
+        <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-12" >
           {currentItems.map((item) => (
             <Card key={item._id} item={item} />
           ))}
