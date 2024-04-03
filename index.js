@@ -33,9 +33,33 @@
  const menuRoutes = require('./api/router/menuRouter')
  const cartRoutes = require('./api/router/cartRouter')
  const userRoutes = require('./api/router/userRoutes')
+ const paymentRoutes = require('./api/router/paymentRouter')
  app.use('/menu', menuRoutes)
  app.use('/carts',cartRoutes )
  app.use('/users',userRoutes)
+ app.use('/payments',paymentRoutes)
+
+
+ //stripe payment route
+ app.post("/create-payment-intent", async (req, res) => {
+   const { price } = req.body;
+   const amount = price*80;
+ 
+  //STRIPE AUTHENTICATION API_KEY
+  const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
+   // Create a PaymentIntent with the order amount and currency
+   const paymentIntent = await stripe.paymentIntents.create({
+     amount: amount,
+     currency: "inr",
+     payment_method_types: ["card"],
+     description:'Software Development Services',
+   });
+ 
+   res.send({
+     clientSecret: paymentIntent.client_secret,
+   });
+ });
 
 
 
