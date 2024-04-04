@@ -3,19 +3,14 @@ const {Schema} = mongoose;
 
 //Create Mongoose Schema for payment
 const paymentSchema = new Schema({
-    name: {
-        type:String,
-        trim:true,
-        minLength:3
-    },
+    name: String,
     email: String,
     transactionId: String,
     price: Number,
     quantity: Number,
     status: String,
-    itemName:Array,
+    itemName: Array,
     cartItems: Array,
-    menuItems: Array,
     createdAt:{
         type:Date,
         default: Date.now()
