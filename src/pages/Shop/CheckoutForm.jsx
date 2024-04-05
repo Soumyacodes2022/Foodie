@@ -3,13 +3,16 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { FaPaypal } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import {useNavigate} from "react-router-dom";
+import Swal from "sweetalert2";
+
 
 const CheckoutForm = ({ cart, price }) => {
   const stripe = useStripe();
   const elements = useElements();
   const {user} = useAuth();
   const axiosSecure = useAxiosSecure();
-
+  const navigate = useNavigate();
   const [cardError,setCardError] = useState('')
   const [cardSuccess,setCardSuccess] = useState('')
   const [clientSecret, setClientSecret] = useState("");
@@ -89,6 +92,7 @@ const CheckoutForm = ({ cart, price }) => {
           status: "order pending",
           itemName: cart.map(item=>item.name),
           cartItems: cart.map(item=>item._id),
+          menuItems: cart.map(item=>item.menuItemId)
         }
 
         // console.log(paymentInfo);
@@ -96,7 +100,19 @@ const CheckoutForm = ({ cart, price }) => {
         axiosSecure.post('/payments',paymentInfo)
         .then(res=> {
           console.log(res.data);
-          alert('Payment details Successfully sent to Backend!')
+          Swal.fire({
+            title: "Payment Successful",
+            icon: "success",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes",
+          }).then((result)=>{
+            if(result.isConfirmed){
+              
+              navigate('/order');
+            }
+          })
         }).catch(error=>console.log(error))
       }
   };

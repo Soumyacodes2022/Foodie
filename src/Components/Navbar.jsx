@@ -38,10 +38,10 @@ const Navbar = () => {
               <Link to="/menu">All</Link>
             </li>
             <li>
-              <a>Salad</a>
+              <Link to="/menu">Salad</Link>
             </li>
             <li>
-              <a>Pizza</a>
+              <Link to="/menu">Pizza</Link>
             </li>
           </ul>
         </details>
@@ -51,13 +51,10 @@ const Navbar = () => {
           <summary>Services</summary>
           <ul className="p-2">
             <li>
-              <a>Online Order</a>
+              <Link to="/menu">Online Order</Link>
             </li>
             <li>
-              <a>Table Booking</a>
-            </li>
-            <li>
-              <a>Order Tracking</a>
+              <Link to="/order">Order Tracking</Link>
             </li>
           </ul>
         </details>
