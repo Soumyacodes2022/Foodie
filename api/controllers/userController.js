@@ -41,8 +41,6 @@ const deleteUser = async(req,res)=> {
     }
 }
 
-
-
 //get admin
 const getAdmin = async(req,res)=> {
     const email = req.params.email;
@@ -66,7 +64,6 @@ const getAdmin = async(req,res)=> {
     }
 }
 
-
 //make an user as admin
 const makeAdmin = async(req,res)=> {
     const userId = req.params.id;
@@ -85,6 +82,9 @@ const makeAdmin = async(req,res)=> {
         res.status(500).json({message: error.message});
     }
 }
+
+
+
 
 
 module.exports = {
