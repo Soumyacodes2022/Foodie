@@ -7,6 +7,7 @@ const router = express.Router();
 const verifyToken = require('../middleware/verifyToken');
 const paymentController = require('../controllers/paymentController');
 //post payment infomations to db
-router.post('/', paymentController.paymentControl);
+router.post('/', verifyToken, paymentController.paymentControl);
+router.get('/',verifyToken, paymentController.getPaymentDetails);
 
 module.exports = router;
