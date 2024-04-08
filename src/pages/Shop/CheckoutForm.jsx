@@ -97,8 +97,7 @@ const CheckoutForm = ({ cart, price }) => {
 
         // console.log(paymentInfo);
         //send the data to backend
-        axiosSecure.post('/payments',paymentInfo)
-        .then(res=> {
+       axiosSecure.post('/payments',paymentInfo).then(res=> {
           console.log(res.data);
           Swal.fire({
             title: "Payment Successful",
@@ -113,7 +112,14 @@ const CheckoutForm = ({ cart, price }) => {
               navigate('/order');
             }
           })
-        }).catch(error=>console.log(error))
+        }).catch(error=>{
+          console.log(error)
+          Swal.fire({
+            title: "Payment Failed",
+            text: "Something went wrong. Please try again later.",
+            icon: "error",
+          });
+        })
       }
   };
 
