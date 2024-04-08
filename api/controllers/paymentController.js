@@ -38,4 +38,7 @@ const getPaymentDetails = async(req,res) => {
 }
   
 
-module.exports = {paymentControl, getPaymentDetails};
+module.exports = {
+  paymentControl, 
+  getPaymentDetails
+};
