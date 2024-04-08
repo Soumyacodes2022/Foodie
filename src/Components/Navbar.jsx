@@ -26,7 +26,7 @@ const Navbar = () => {
           </summary>
         </Link>
       </li>
-      <li tabIndex={0}>
+      <li >
         <details>
           <summary
             className={`${location.pathname === "/menu" ? " text-green" : ""}`}
@@ -48,11 +48,9 @@ const Navbar = () => {
       </li>
       <li>
         <details>
-          <summary>Services</summary>
+          <summary className={`${ location.pathname === "/order" ? " text-green" : ""}`}
+          >Services</summary>
           <ul className="p-2">
-            <li>
-              <Link to="/menu">Online Order</Link>
-            </li>
             <li>
               <Link to="/order">Order Tracking</Link>
             </li>

@@ -249,7 +249,7 @@ const CartPage = () => {
           <p>Total Items: {cart.length}</p>
           <p>Total Price: ${orderTotal.toFixed(2)}</p>
           <Link to="/proceed-checkout">
-          <button className="btn btn-ghost bg-green text-white hover:text-black my-4">
+          <button className="btn btn-ghost bg-green text-white hover:text-black my-4" disabled={cart.length===0}>
             Proceed to Checkout
           </button>
           </Link>
