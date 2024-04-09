@@ -89,7 +89,7 @@ const CheckoutForm = ({ cart, price }) => {
           transactionid: paymentIntent.id,
           price,
           quantity: cart.length,
-          status: "order pending",
+          status: "Order pending",
           itemName: cart.map(item=>item.name),
           cartItems: cart.map(item=>item._id),
           menuItems: cart.map(item=>item.menuItemId)
@@ -97,10 +97,11 @@ const CheckoutForm = ({ cart, price }) => {
 
         // console.log(paymentInfo);
         //send the data to backend
+        console.log(paymentInfo.transactionid)
        axiosSecure.post('/payments',paymentInfo).then(res=> {
           console.log(res.data);
           Swal.fire({
-            title: "Payment Successful",
+            title: "Payment Successfull",
             icon: "success",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
