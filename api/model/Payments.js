@@ -5,7 +5,7 @@ const {Schema} = mongoose;
 const paymentSchema = new Schema({
     name: String,
     email: String,
-    transactionId: String,
+    transactionid: String,
     price: Number,
     quantity: Number,
     status: String,
