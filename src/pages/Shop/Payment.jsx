@@ -1,6 +1,6 @@
 import React from 'react'
 import { Elements } from '@stripe/react-stripe-js';
-import CheckoutForm from './checkoutForm';
+import CheckoutForm from './CheckoutForm';
 import { loadStripe } from '@stripe/stripe-js';
 import useCart from '../../hooks/useCart';
 

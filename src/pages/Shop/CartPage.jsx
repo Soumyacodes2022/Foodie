@@ -207,7 +207,7 @@ const CartPage = () => {
             </tbody>
           </table>
           {cart.length === 0 ? (
-            <div className=" h-40">
+            <div className=" h-40 flex flex-col justify-center items-center">
               <h2 className="flex justify-center items-center text-xl md:text-2xl font-bold">
                 {" "}
                 Nothing To Show <span className="text-green px-2">
@@ -219,6 +219,11 @@ const CartPage = () => {
                 Add your items to the cart to Purchase.
                 <span className="text-green px-2"> Happy Dinner!</span>
               </p>
+              <Link to="/menu">
+          <button className="btn btn-ghost bg-green text-white hover:text-black my-4" >
+            Back to Menu
+          </button>
+          </Link>
             </div>
           ) : (
             ""
@@ -237,7 +242,9 @@ const CartPage = () => {
         </div>
       </div>
       {/* Customer Details */}
-      <div className="my-12 flex flex-col md:flex-row justify-between items-start">
+      {
+        cart.length === 0 ? "" :
+        <div className="my-12 flex flex-col md:flex-row justify-between items-start">
         <div className="md:w-1/2 space-y-3 my-4 md:my-1">
           <h3 className="font-semibold"> Customer Details</h3>
           <p>Name: {user.displayName}</p>
@@ -249,12 +256,14 @@ const CartPage = () => {
           <p>Total Items: {cart.length}</p>
           <p>Total Price: ${orderTotal.toFixed(2)}</p>
           <Link to="/proceed-checkout">
-          <button className="btn btn-ghost bg-green text-white hover:text-black my-4" disabled={cart.length===0}>
+          <button className="btn btn-ghost bg-green text-white hover:text-black my-4" >
             Proceed to Checkout
           </button>
           </Link>
         </div>
       </div>
+      }
+      
     </div>
   );
 };
