@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 const Modal = () => {
     const{
         register,
@@ -15,7 +16,7 @@ const Modal = () => {
     } = useForm();
     const {signupWithGmail , loginwithEmail} = useAuth();
     const [errorMessage , setErrorMessage] = useState("");
-    
+    const axiosPublic = useAxiosPublic();
     //Redirecting on correct credentials
     const location = useLocation();
     const navigate = useNavigate();
@@ -32,7 +33,7 @@ const Modal = () => {
           name: data.name,
           email: data.email
         }
-        axios.post('http://localhost:3000/users',userInfo).then(()=>{
+        axiosPublic.post('/users',userInfo).then(()=>{
   
             alert("Logged In Successfully!");
             document.getElementById("my_modal_1").close()
@@ -56,7 +57,7 @@ const Modal = () => {
           name: response?.user?.displayName,
           email: response?.user?.email
         }
-        axios.post('http://localhost:3000/users',userInfo).then(()=>{
+        axiosPublic.post('/users',userInfo).then(()=>{
   
             alert("Logged In Successfully!");
             document.getElementById("my_modal_1").close()

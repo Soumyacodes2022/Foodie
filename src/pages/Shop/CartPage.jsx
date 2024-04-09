@@ -21,7 +21,7 @@ const CartPage = () => {
   const handlePlus = async (item) => {
     // console.log(item._id);
   try {
-    const response = await  fetch(`http://localhost:3000/carts/${item._id}`, {
+    const response = await  fetch(`https://foodi-server-7z1l.onrender.com/carts/${item._id}`, {
       method: "PUT",
       headers: {
         "Content-type": "application/json",
@@ -56,7 +56,7 @@ const CartPage = () => {
 
     
     try {
-    const response = await  fetch(`http://localhost:3000/carts/${item._id}`, {
+    const response = await  fetch(`https://foodi-server-7z1l.onrender.com/carts/${item._id}`, {
       method: "PUT",
       headers: {
         "Content-type": "application/json",
@@ -93,7 +93,7 @@ const CartPage = () => {
   const orderTotal = cartSubTotal;
   //Delete an Item from cart
   const handleDelete = (item) => {
-    axios.delete(`http://localhost:3000/carts/${item._id}`).then((res) => {
+    axios.delete(`https://foodi-server-7z1l.onrender.com/carts/${item._id}`).then((res) => {
       if (res) {
         refetch();
       }
@@ -112,7 +112,7 @@ const CartPage = () => {
       confirmButtonText: "Yes, delete All!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`http://localhost:3000/carts`).then((res) => {
+        axios.delete(`https://foodi-server-7z1l.onrender.com/carts`).then((res) => {
           if (res) {
             refetch();
             Swal.fire({

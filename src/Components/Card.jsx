@@ -5,6 +5,7 @@ import { AuthContext } from "../contexts/AuthProvider";
 import useCart from "../hooks/useCart"
 import Swal from 'sweetalert2'
 import axios from "axios";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 
 
 const Card = ({ item }) => {
@@ -14,6 +15,7 @@ const Card = ({ item }) => {
   const [cart, refetch] = useCart();
   const location = useLocation();
   const navigate = useNavigate();
+  const axiosPublic = useAxiosPublic();
   const handleAddToCart = (item) => {
     // console.log("button is clicked",item)
     if (user && user?.email) {
@@ -27,7 +29,7 @@ const Card = ({ item }) => {
       };
       // console.log(cartItems)
 
-      axios.post("http://localhost:3000/carts", cartItems)
+      axiosPublic.post("/carts", cartItems)
         .then((res) => {
           console.log(res);
           if(res){

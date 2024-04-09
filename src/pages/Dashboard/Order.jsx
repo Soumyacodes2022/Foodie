@@ -2,16 +2,17 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../hooks/useAuth";
 import { FaTrash } from "react-icons/fa";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 const Order = () => {
   const { user } = useAuth();
   const token = localStorage.getItem("Access-Token");
   const userEmail = user?.email || "";
-
+  const axiosSecure = useAxiosSecure();
   
   const { refetch, data: orders = [] } = useQuery({
     queryKey: ["orders", userEmail],
     queryFn: async () => {
-      const res = await fetch(
+      const res = axiosSecure.get(
         `http://localhost:3000/payments?email=${userEmail}`,
         {
           headers: {
