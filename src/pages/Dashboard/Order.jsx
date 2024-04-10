@@ -13,7 +13,7 @@ const Order = () => {
     queryKey: ["orders", userEmail],
     queryFn: async () => {
       const res = axiosSecure.get(
-        `http://localhost:3000/payments?email=${userEmail}`,
+        `/payments?email=${userEmail}`,
         {
           headers: {
             authorization: `Bearer ${token}`,

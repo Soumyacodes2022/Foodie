@@ -9,7 +9,7 @@ const useCart = () => {
     const {refetch ,data:cart = [] } = useQuery({ 
       queryKey: ['carts', user?.email], 
       queryFn: async()=>{
-        const res = axiosSecure.get(`http://localhost:3000/carts?email=${user?.email}`,{
+        const res = axiosSecure.get(`/carts?email=${user?.email}`,{
           headers:{
             authorization:`Bearer ${token}`
           }

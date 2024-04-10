@@ -48,7 +48,7 @@ import Order from "../pages/Dashboard/Order";
         },
         {
           path:'/order',
-          element:<Order/>
+          element:<PrivateRouter><Order/></PrivateRouter>
         }
         
       ]
@@ -84,7 +84,7 @@ import Order from "../pages/Dashboard/Order";
         {
           path:'update-item/:id',
           element:<UpdateMenuItem/>,
-          loader:({params})=>fetch(`http://localhost:3000/menu/${params.id}`)
+          loader:({params})=>fetch(`https://foodi-server-7z1l.onrender.com/menu/${params.id}`)
         },
       ]
     }
