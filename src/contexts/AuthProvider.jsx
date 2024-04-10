@@ -3,6 +3,7 @@ import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStat
 import app from '../firebase/firebase.config';
 import { FaChevronCircleLeft } from 'react-icons/fa';
 import axios from 'axios';
+import useAxiosPublic from '../hooks/useAxiosPublic';
 
 export const AuthContext = createContext();
 const auth = getAuth(app);
@@ -11,7 +12,7 @@ const googleProvider = new GoogleAuthProvider();
 const AuthProvider = ({children}) => {
     const [user,setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-
+    const axiosPublic = useAxiosPublic()
     //create User
     const createUser =  (email,password) => {
       setLoading(true);
@@ -48,7 +49,7 @@ const AuthProvider = ({children}) => {
               setUser(currentUser);
               if(currentUser){
                 const userInfo = {email: currentUser.email};
-                axios.post('http://localhost:3000/jwt' , userInfo)
+                axiosPublic.post('/jwt' , userInfo)
                 .then((response)=>{
                   // console.log(response)
                   if(response.data.token){
