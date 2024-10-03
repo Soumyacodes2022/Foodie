@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import { Link } from "react-router-dom";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const CartPage = () => {
   const [cart, refetch] = useCart();
@@ -18,72 +19,82 @@ const CartPage = () => {
   };
 
   //Plus button function
-  const handlePlus = async (item) => {
-    // console.log(item._id);
+const handlePlus = async (item) => {
+  // Optimistically update the state
+  const updatedQuantity = item.quantity + 1;
+  const updatedCartItems = cartItems.map((cartItem) => {
+    if (cartItem.id === item.id) {
+      return { ...cartItem, quantity: updatedQuantity };
+    }
+    return cartItem;
+  });
+  setCartItems(updatedCartItems); // Update the state immediately
+
   try {
-    const response = await  fetch(`https://foodi-server-7z1l.onrender.com/carts/${item._id}`, {
-      method: "PUT",
+    const response = await useAxiosPublic().put(`/carts/${item._id}`, {
+      quantity: updatedQuantity,
+    }, {
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify({ quantity: item.quantity + 1 }),
-    })
-        if(response.ok){
-          const updateData = cartItems.map((cartItem) => {
-            if (cartItem.id === item.id) {
-              return {
-                ...cartItem,
-                quantity: cartItem.quantity + 1,
-              };
-            }
-            return cartItem;
-          })
-          await refetch();
-          setCartItems(updateData);
-        }else{
-          console.error("Failed to update quantity");
-        }
+    });
+
+    if (response.status >= 200 && response.status < 300) {
+      // Successfully updated
+      await refetch(); // Optionally refetch updated cart data
+    } else {
+      console.error("Failed to update quantity", response);
+      // Optionally revert state if needed
+      setCartItems(cartItems); // Revert to original state
+    }
   } catch (error) {
     console.error("Error updating quantity:", error);
+    // Optionally revert state if needed
+    setCartItems(cartItems); // Revert to original state
   }
-        
-  };
+};
 
   //Minus button function
-  const handleMinus = async(item) => {
-    // console.log(item._id);
-    if(item.quantity>1){
+ 
 
     
-    try {
-    const response = await  fetch(`https://foodi-server-7z1l.onrender.com/carts/${item._id}`, {
-      method: "PUT",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({ quantity: item.quantity - 1 }),
-    })
-        if(response.ok){
-          const updateData = cartItems.map((cartItem) => {
+    
+      const handleMinus = async (item) => {
+        if (item.quantity > 1) {
+          // Optimistically update the state
+          const updatedQuantity = item.quantity - 1;
+          const updatedCartItems = cartItems.map((cartItem) => {
             if (cartItem.id === item.id) {
-              return {
-                ...cartItem,
-                quantity: cartItem.quantity - 1,
-              };
+              return { ...cartItem, quantity: updatedQuantity };
             }
             return cartItem;
-          })
-          await refetch();
-          setCartItems(updateData);
-        }else{
-          console.error("Failed to update quantity");
-        }
-  } catch (error) {
-    console.error("Error updating quantity:", error);
-  }
+          });
+          setCartItems(updatedCartItems); // Update the state immediately
+      
+          try {
+            const response = await useAxiosPublic().put(`/carts/${item._id}`, {
+              quantity: updatedQuantity,
+            }, {
+              headers: {
+                "Content-type": "application/json",
+              },
+            });
+      
+            if (response.status >= 200 && response.status < 300) {
+              // Successfully updated
+              await refetch(); // Optionally refetch updated cart data
+            } else {
+              console.error("Failed to update quantity", response);
+              // Optionally revert state if needed
+              setCartItems(cartItems); // Revert to original state
+            }
+          } catch (error) {
+            console.error("Error updating quantity:", error);
+            // Optionally revert state if needed
+            setCartItems(cartItems); // Revert to original state
+          }}};
         
-}
-  };
+   
 
   //Calculate Total Price
   const cartSubTotal = cart.reduce((total, item) => {

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Card from "../../Components/Card";
 import { FaFilter } from "react-icons/fa";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const Menu = () => {
   const [menu, setMenu] = useState([]);
@@ -16,9 +17,8 @@ const Menu = () => {
     //fetching data from the backend
     const fetchedData = async () => {
       try {
-        const response = await fetch("https://foodi-server-7z1l.onrender.com/menu");
-        const data = await response.json();
-        // console.log(data);
+        const response = await useAxiosPublic().get("/menu");
+        const data= response.data;
         setMenu(data);
         setFilteredItems(data);
       } catch (e) {

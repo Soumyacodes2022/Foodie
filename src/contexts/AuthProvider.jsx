@@ -45,27 +45,32 @@ const AuthProvider = ({children}) => {
     //check user sign in
     useEffect(()=>{
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-          
-              setUser(currentUser);
+          setUser(currentUser);
+              setLoading(true);
               if(currentUser){
                 const userInfo = {email: currentUser.email};
                 axiosPublic.post('/jwt' , userInfo)
                 .then((response)=>{
-                  // console.log(response)
                   if(response.data.token){
                     localStorage.setItem( "Access-Token" , response.data.token)
                   }
                 })
+                .catch((error) => {
+                  console.error("Error fetching JWT:", error);
+                })
+                .finally(() => {
+                  setLoading(false);  // Ensure loading is stopped once token request is done
+                });
               }
               else{
                 localStorage.removeItem("Access-Token")
+                setLoading(false);
               }
-              setLoading(false);
             
           })
-          return ()=>{
-            return unsubscribe()
-          }
+          
+            return ()=>unsubscribe()
+          
     },[])
     const authInfo = {
         user,

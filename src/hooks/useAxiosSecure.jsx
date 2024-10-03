@@ -15,7 +15,9 @@ const navigate = useNavigate();
 // Add a request interceptor
 axiosSecure.interceptors.request.use(function (config) {
     const token = localStorage.getItem("Access-Token");
-    config.headers.authorization = `Bearer ${token}`
+    if(token){
+    config.headers.authorization = `Bearer ${token}`;
+    }
     return config;
   }, function (error) {
     return Promise.reject(error);
@@ -29,6 +31,7 @@ axiosSecure.interceptors.response.use(function (response) {
     const status = error.response.status;
     if(status === 401 || status === 403){
         await logOut();
+        navigate('/')
     }
     return Promise.reject(error);
   });
