@@ -11,22 +11,22 @@ const Main = () => {
   return (
     
     <div>
+        <Navbar />
       {
         loading ? <Loading/> : 
       <div> 
-        <Navbar />
         
         <div className="min-h-screen">
         <Outlet />
         </div>
 
-        <Footer />
       </div>
+      }
+        <Footer />
       
 
       
       
-      }
         
         
       
